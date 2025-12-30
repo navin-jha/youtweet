@@ -1,0 +1,43 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "a backend project for serving all the backend facilities and services to youtweet web app.",
+  "keywords": [
+    "javascript",
+    "baackend",
+    "mongoose",
+    "express",
+    "dotenv",
+    "cors",
+    "cookie-parser",
+    "jsonwebtoken",
+    "web-app",
+    "youtweet"
+  ],
+  "homepage": "https://github.com/navin-jha/youtweet#readme",
+  "bugs": {
+    "url": "https://github.com/navin-jha/youtweet/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/navin-jha/youtweet.git"
+  },
+  "license": "ISC",
+  "author": "Navin Jha",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11",
+    "prettier": "3.7.4"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.1.0"
+  }
+}

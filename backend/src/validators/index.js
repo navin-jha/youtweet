@@ -1,3 +1,3 @@
-import { registerUserValidator } from "./user.validator.js";
+import { registerUserValidator, loginUserValidator } from "./user.validator.js";
 
-export { registerUserValidator };
+export { registerUserValidator, loginUserValidator };

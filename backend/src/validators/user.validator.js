@@ -15,6 +15,8 @@ const registerUserValidator = () => {
       .trim()
       .notEmpty()
       .withMessage("Email is required")
+      .isLowercase()
+      .withMessage("Email must be in lowercase")
       .isEmail()
       .withMessage("Invalid email format"),
     body("password")
@@ -22,10 +24,27 @@ const registerUserValidator = () => {
       .notEmpty()
       .withMessage("Password is required")
       .isLength({ min: 6 })
-      .withMessage("Password must be at least 6 characters long")
-      .isAlphanumeric()
-      .withMessage("Password must be alphanumeric"),
+      .withMessage("Password must be at least 6 characters long"),
   ];
 };
 
-export { registerUserValidator };
+const loginUserValidator = () => {
+  return [
+    body("usernameOrEmail")
+      .trim()
+      .notEmpty()
+      .withMessage("Username or email is required")
+      .isLowercase()
+      .withMessage("Username or email must be in lowercase")
+      .isLength({ min: 6 })
+      .withMessage("Invalid username or email"),
+    body("password")
+      .trim()
+      .notEmpty()
+      .withMessage("Password is required")
+      .isLength({ min: 6 })
+      .withMessage("Password must be at least 6 characters long"),
+  ];
+};
+
+export { registerUserValidator, loginUserValidator };

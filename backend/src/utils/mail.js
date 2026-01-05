@@ -69,8 +69,8 @@ const forgotPasswordMailgenContent = (username, resetPasswordLink) => {
       action: {
         instructions: "Click the button below to reset your password.",
         button: {
-          color: "#DD4B39",
-          text: "Reset your password",
+          color: "#22BC66",
+          text: "Reset Your Password",
           link: resetPasswordLink,
         },
       },

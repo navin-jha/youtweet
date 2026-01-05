@@ -1,3 +1,4 @@
-import upload from "./multer.middleware";
+import upload from "./multer.middleware.js";
+import validate from "./validator.middleware.js";
 
-export { upload };
+export { upload, validate };

@@ -1,3 +1,19 @@
-import { registerUserValidator, loginUserValidator } from "./user.validator.js";
+import {
+  registerUserValidator,
+  loginUserValidator,
+  resendEmailVerificationValidator,
+  forgotPasswordRequestValidator,
+  resetForgotPasswordValidator,
+  changeCurrentPasswordValidator,
+  updateAccountDetailsValidator,
+} from "./user.validator.js";
 
-export { registerUserValidator, loginUserValidator };
+export {
+  registerUserValidator,
+  loginUserValidator,
+  resendEmailVerificationValidator,
+  forgotPasswordRequestValidator,
+  resetForgotPasswordValidator,
+  changeCurrentPasswordValidator,
+  updateAccountDetailsValidator,
+};

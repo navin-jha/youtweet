@@ -25,6 +25,6 @@ import { healthCheckRouter, userRouter } from "./routes/index.js";
 
 // configure routes
 app.use("/api/v1/healthCheck", healthCheckRouter);
-app.use("/api/v1/user", userRouter);
+app.use("/api/v1/users", userRouter);
 
 export default app;

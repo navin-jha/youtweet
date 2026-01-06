@@ -37,7 +37,7 @@ const sendEmail = async (options) => {
     console.log(
       "Email service failed siliently. Make sure that you have provided your MAILTRAP credentials in the .env file"
     );
-    console.error("Error:", error);
+    throw new Error(error.message);
   }
 };
 

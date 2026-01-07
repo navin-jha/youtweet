@@ -33,6 +33,7 @@ import {
   updateUserCoverImage,
   updateAccountDetails,
   logoutUser,
+  deleteUser,
 } from "../controllers/user.controller.js";
 
 // declaring routes
@@ -118,5 +119,7 @@ router
   );
 
 router.route("/logout").get(verifyJWT, logoutUser);
+
+router.route("/delete").delete(verifyJWT, deleteUser);
 
 export default router;

@@ -8,9 +8,11 @@ cloudinary.config({
 });
 
 const uploadOnCloudinary = async (localFilePath) => {
-  try {
-    if (!localFilePath) return null;
+  if (!localFilePath) {
+    throw new Error("Local file path is missing");
+  }
 
+  try {
     // upload the file on cloudinary
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "auto",
@@ -18,19 +20,26 @@ const uploadOnCloudinary = async (localFilePath) => {
 
     // file uploaded successfully
     fs.unlinkSync(localFilePath);
-    return response.url;
+    return response;
   } catch (error) {
     fs.unlinkSync(localFilePath); // remove tha locally saved temporary file as the upload operation got failed
     throw new Error(error);
   }
 };
 
-const removeFromCloudinary = async (publicId) => {
+const removeFromCloudinary = async (publicUrl, resourceType) => {
+  if (!publicUrl || !resourceType) {
+    throw new Error("Public url or resource type is missing");
+  }
+
   try {
-    if (!publicId) return null;
-    const response = await cloudinary.uploader.destroy(publicId, {
-      resource_type: "image",
-    });
+    // reomve the file from cloudinary
+    const response = await cloudinary.uploader.destroy(
+      publicUrl.match(/[^/]+(?=\.[^./]*$)/)[0],
+      {
+        resource_type: resourceType,
+      }
+    );
     return response;
   } catch (error) {
     throw new Error(error);

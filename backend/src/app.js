@@ -21,10 +21,11 @@ app.use(cookieParser());
 app.use(express.static("public"));
 
 // import routers
-import { healthCheckRouter, userRouter } from "./routes/index.js";
+import { healthCheckRouter, userRouter, videoRouter } from "./routes/index.js";
 
 // configure routes
 app.use("/api/v1/healthCheck", healthCheckRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/videos", videoRouter);
 
 export default app;

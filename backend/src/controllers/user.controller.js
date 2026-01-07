@@ -43,7 +43,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "User with username or email already exists");
   }
 
-  let avatar = null;
+  let avatar;
   if (
     req.files &&
     Array.isArray(req.files.avatar) &&
@@ -54,7 +54,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Avatar file is required");
   }
 
-  let coverImage = null;
+  let coverImage;
   if (
     req.files &&
     Array.isArray(req.files.coverImage) &&
@@ -67,8 +67,8 @@ const registerUser = asyncHandler(async (req, res) => {
     fullname,
     username,
     email,
-    avatar,
-    coverImage,
+    avatar: avatar.url,
+    coverImage: coverImage?.url || null,
     password,
     isEmailVerified: false,
   });
@@ -234,15 +234,14 @@ const forgotPasswordRequest = asyncHandler(async (req, res) => {
     );
   }
 
-  // await sendEmail({
-  //   email: existedUser.email,
-  //   subject: "Password reset request",
-  //   mailgenContent: forgotPasswordMailgenContent(
-  //     existedUser.username,
-  //     `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/${unHashedToken}`
-  //   ),
-  // });
-  console.log(unHashedToken);
+  await sendEmail({
+    email: existedUser.email,
+    subject: "Password reset request",
+    mailgenContent: forgotPasswordMailgenContent(
+      existedUser.username,
+      `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/${unHashedToken}`
+    ),
+  });
 
   return res
     .status(200)
@@ -550,25 +549,24 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 });
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
-  let avatar = null;
+  let avatar;
   if (req.file?.path) {
     avatar = await uploadOnCloudinary(req.file.path);
   } else {
     throw new ApiError(400, "Avatar file is required");
   }
 
-  const existedAvatarPublicId = req.user.avatar.match(/[^/]+(?=\.[^./]*$)/);
-  await removeFromCloudinary(existedAvatarPublicId[0]);
-
   const user = await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set: { avatar: avatar },
+      $set: { avatar: avatar.url },
     },
     {
       new: true,
     }
   ).select("-password -refreshToken");
+
+  await removeFromCloudinary(req.user.avatar, "image");
 
   return res
     .status(200)
@@ -576,28 +574,26 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 });
 
 const updateUserCoverImage = asyncHandler(async (req, res) => {
-  let coverImage = null;
+  let coverImage;
   if (req.file?.path) {
     coverImage = await uploadOnCloudinary(req.file.path);
   } else {
     throw new ApiError(400, "Cover image file is required");
   }
 
-  if (req.user.coverImage) {
-    const existedCoverImagePublicId =
-      req.user.coverImage.match(/[^/]+(?=\.[^./]*$)/);
-    await removeFromCloudinary(existedCoverImagePublicId[0]);
-  }
-
   const user = await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set: { coverImage: coverImage },
+      $set: { coverImage: coverImage.url },
     },
     {
       new: true,
     }
   ).select("-password -refreshToken");
+
+  if (req.user.coverImage) {
+    await removeFromCloudinary(req.user.coverImage, "image");
+  }
 
   return res
     .status(200)
@@ -652,6 +648,26 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "User logged out successfully"));
 });
 
+const deleteUser = asyncHandler(async (req, res) => {
+  await User.findByIdAndDelete(req.user._id);
+
+  await removeFromCloudinary(req.user.avatar, "image");
+  if (req.user.coverImage) {
+    await removeFromCloudinary(req.user.coverImage, "image");
+  }
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, {}, "User deleted successfully"));
+});
+
 export {
   registerUser,
   resendEmailVerification,
@@ -668,4 +684,5 @@ export {
   updateUserCoverImage,
   updateAccountDetails,
   logoutUser,
+  deleteUser,
 };

@@ -3,7 +3,7 @@ import { Tweet } from "../models/tweet.model.js";
 import { ApiResponse, asyncHandler } from "../utils/index.js";
 
 const getUserTweets = asyncHandler(async (req, res) => {
-  const userId = req.params;
+  const { userId } = req.params;
 
   const tweets = await Tweet.aggregate([
     {

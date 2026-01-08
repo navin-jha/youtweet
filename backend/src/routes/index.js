@@ -5,6 +5,8 @@ import commentRouter from "./comment.route.js";
 import dashboardRouter from "./dashboard.route.js";
 import likeRouter from "./like.route.js";
 import tweetRouter from "./tweet.route.js";
+import playlistRouter from "./playlist.route.js";
+import subscriptionRouter from "./subscription.route.js";
 
 export {
   healthCheckRouter,
@@ -14,4 +16,6 @@ export {
   dashboardRouter,
   likeRouter,
   tweetRouter,
+  playlistRouter,
+  subscriptionRouter,
 };

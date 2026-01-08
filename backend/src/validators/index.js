@@ -19,6 +19,10 @@ import {
   createTweetValidator,
   updateTweetValidator,
 } from "./tweet.validator.js";
+import {
+  createPlaylistValidator,
+  updatePlaylistValidator,
+} from "./playlist.validator.js";
 
 export {
   registerUserValidator,
@@ -34,4 +38,6 @@ export {
   updateCommentValidator,
   createTweetValidator,
   updateTweetValidator,
+  createPlaylistValidator,
+  updatePlaylistValidator,
 };

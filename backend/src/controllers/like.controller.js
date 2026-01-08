@@ -35,12 +35,12 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
     await Like.findByIdAndDelete(likedComment._id);
     return res
       .status(200)
-      .json(new ApiResponse(200, { message: "Video unliked successfully" }));
+      .json(new ApiResponse(200, { message: "Comment unliked successfully" }));
   } else {
     await Like.create({ comment: commentId, likedBy: req.user._id });
     return res
       .status(200)
-      .json(new ApiResponse(200, { message: "Video liked successfully" }));
+      .json(new ApiResponse(200, { message: "Comment liked successfully" }));
   }
 });
 
@@ -96,7 +96,7 @@ const getLikedVideos = asyncHandler(async (req, res) => {
     },
     {
       $sort: {
-        cereatedAt: -1,
+        createdAt: -1,
       },
     },
     {
@@ -170,7 +170,6 @@ const getLikedTweets = asyncHandler(async (req, res) => {
         likedTweet: {
           _id: 1,
           content: 1,
-          owner: 1,
           createdAt: 1,
           ownerDetails: {
             username: 1,

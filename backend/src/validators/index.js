@@ -15,6 +15,10 @@ import {
   addCommentValidator,
   updateCommentValidator,
 } from "./comment.validator.js";
+import {
+  createTweetValidator,
+  updateTweetValidator,
+} from "./tweet.validator.js";
 
 export {
   registerUserValidator,
@@ -28,4 +32,6 @@ export {
   updateVideoValidator,
   addCommentValidator,
   updateCommentValidator,
+  createTweetValidator,
+  updateTweetValidator,
 };

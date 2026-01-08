@@ -23,7 +23,14 @@ import {
 router.use(verifyJWT);
 
 // declaring routes
-router.route("/:videoId").get(getVideoComments).post(addComment);
-router.route("/c/:commentId").patch(updateComment).delete(deleteComment);
+router
+  .route("/:videoId")
+  .get(getVideoComments)
+  .post(addCommentValidator(), validate, addComment);
+
+router
+  .route("/c/:commentId")
+  .patch(updateCommentValidator(), validate, updateComment)
+  .delete(deleteComment);
 
 export default router;
